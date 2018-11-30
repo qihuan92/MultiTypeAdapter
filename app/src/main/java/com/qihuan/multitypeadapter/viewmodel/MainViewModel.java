@@ -1,6 +1,7 @@
 package com.qihuan.multitypeadapter.viewmodel;
 
-import com.qihuan.multitypeadapter.adapter.Item;
+
+import com.qihuan.adapter.Item;
 import com.qihuan.multitypeadapter.model.Cat;
 import com.qihuan.multitypeadapter.model.Dog;
 import com.qihuan.multitypeadapter.model.Fish;

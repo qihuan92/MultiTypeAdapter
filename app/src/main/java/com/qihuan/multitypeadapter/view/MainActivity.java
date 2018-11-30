@@ -2,8 +2,9 @@ package com.qihuan.multitypeadapter.view;
 
 import android.os.Bundle;
 
+import com.qihuan.adapter.MultiTypeAdapter;
+import com.qihuan.adapter.TypeFactoryImpl;
 import com.qihuan.multitypeadapter.R;
-import com.qihuan.multitypeadapter.adapter.MultiTypeAdapter;
 import com.qihuan.multitypeadapter.viewmodel.MainViewModel;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initList() {
         rvList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MultiTypeAdapter();
+        adapter = new MultiTypeAdapter(new TypeFactoryImpl());
         rvList.setAdapter(adapter);
     }
 

@@ -1,7 +1,7 @@
 package com.qihuan.multitypeadapter.model;
 
-import com.qihuan.multitypeadapter.adapter.TypeFactory;
-import com.qihuan.multitypeadapter.adapter.Item;
+import com.qihuan.adapter.Item;
+import com.qihuan.adapter.TypeFactory;
 
 /**
  * Cat

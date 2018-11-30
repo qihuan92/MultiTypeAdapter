@@ -1,10 +1,8 @@
-package com.qihuan.multitypeadapter.adapter;
+package com.qihuan.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.qihuan.annotation.Factory;
 
 import java.util.List;
 
@@ -19,13 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
-    @Factory
-    TypeFactory typeFactory;
+    private TypeFactory typeFactory;
     private List<Item> dataList;
 
-    public MultiTypeAdapter() {
-        FactoryInjector.inject(this);
-        typeFactory = new TypeFactoryImpl();
+    public MultiTypeAdapter(TypeFactory typeFactory) {
+        this.typeFactory = typeFactory;
     }
 
     @NonNull

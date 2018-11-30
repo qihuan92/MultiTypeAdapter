@@ -1,7 +1,6 @@
 package com.qihuan.complier;
 
 import com.google.auto.service.AutoService;
-import com.qihuan.annotation.Factory;
 import com.qihuan.annotation.ItemType;
 import com.qihuan.complier.bean.ViewHolderInfoBean;
 import com.squareup.javapoet.ClassName;
@@ -51,7 +50,6 @@ public class ItemTypeProcessor extends AbstractProcessor {
     public Set<String> getSupportedAnnotationTypes() {
         LinkedHashSet<String> annotations = new LinkedHashSet<>();
         annotations.add(ItemType.class.getCanonicalName());
-        annotations.add(Factory.class.getCanonicalName());
         return annotations;
     }
 
@@ -63,9 +61,6 @@ public class ItemTypeProcessor extends AbstractProcessor {
                 return true;
             }
             analysisAnnotated(element);
-        }
-        for (Element element : roundEnvironment.getElementsAnnotatedWith(Factory.class)) {
-
         }
         genTypeFactory();
         initTypeFactory();

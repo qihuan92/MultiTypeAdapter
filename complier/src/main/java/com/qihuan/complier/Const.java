@@ -7,5 +7,5 @@ package com.qihuan.complier;
  * @date 2018/11/30
  */
 public interface Const {
-    String ADAPTER_PACKAGE_NAME = "com.qihuan.multitypeadapter.adapter";
+    String ADAPTER_PACKAGE_NAME = "com.qihuan.adapter";
 }

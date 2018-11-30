@@ -1,4 +1,4 @@
-package com.qihuan.multitypeadapter.adapter;
+package com.qihuan.adapter;
 
 /**
  * Item

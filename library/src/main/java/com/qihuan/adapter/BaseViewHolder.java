@@ -1,4 +1,4 @@
-package com.qihuan.multitypeadapter.adapter;
+package com.qihuan.adapter;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
