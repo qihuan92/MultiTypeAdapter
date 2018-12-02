@@ -20,8 +20,11 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private TypeFactory typeFactory;
     private List<Item> dataList;
 
-    public MultiTypeAdapter(TypeFactory typeFactory) {
-        this.typeFactory = typeFactory;
+    public MultiTypeAdapter() {
+        this.typeFactory = getTypeFactory();
+        if (this.typeFactory == null) {
+            throw new RuntimeException("Your ViewHolder must be annotated with @ItemType");
+        }
     }
 
     @NonNull
@@ -63,5 +66,17 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
         dataList.clear();
         notifyDataSetChanged();
+    }
+
+    private TypeFactory getTypeFactory() {
+        TypeFactory typeFactory = null;
+        try {
+            String factoryImplName = TypeFactory.class.getCanonicalName() + "Impl";
+            Class<?> factoryImplClass = Class.forName(factoryImplName);
+            typeFactory = (TypeFactory) factoryImplClass.newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
+        }
+        return typeFactory;
     }
 }
