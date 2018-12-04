@@ -33,6 +33,10 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
+import static com.qihuan.complier.Const.ADAPTER_PACKAGE_NAME;
+import static com.qihuan.complier.Const.TYPE_FACTORY;
+import static com.qihuan.complier.Const.TYPE_FACTORY_IMPL;
+
 /**
  * ItemTypeProcessor
  *
@@ -53,8 +57,6 @@ public class ItemTypeProcessor extends AbstractProcessor {
         viewHolderInfoList = new ArrayList<>();
         filer = processingEnvironment.getFiler();
         messager = processingEnvironment.getMessager();
-
-        messager.printMessage(Diagnostic.Kind.NOTE, "init");
     }
 
     @Override
@@ -66,7 +68,6 @@ public class ItemTypeProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        messager.printMessage(Diagnostic.Kind.NOTE, "process");
         for (Element element : roundEnvironment.getElementsAnnotatedWith(BindItemView.class)) {
             if (element.getKind() != ElementKind.CLASS) {
                 error(element, "Only classes can be annotated with @%s", BindItemView.class.getSimpleName());
@@ -106,7 +107,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
     private void genTypeFactory() {
         ParameterSpec typeParameterSpec = ParameterSpec.builder(TypeName.INT, "type").build();
         ParameterSpec viewParameterSpec = ParameterSpec.builder(ClassName.get("android.view", "View"), "view").build();
-        ParameterSpec itemParameterSpec = ParameterSpec.builder(ClassName.get(Const.ADAPTER_PACKAGE_NAME, "Item"), "data").build();
+        ParameterSpec itemParameterSpec = ParameterSpec.builder(ClassName.get(ADAPTER_PACKAGE_NAME, "Item"), "data").build();
         CodeBlock.Builder typeBlock = CodeBlock.builder();
         CodeBlock.Builder createViewHolderBlock = CodeBlock.builder();
 
@@ -129,9 +130,9 @@ public class ItemTypeProcessor extends AbstractProcessor {
         }
 
         // 写入文件
-        JavaFile javaFile = JavaFile.builder(Const.ADAPTER_PACKAGE_NAME,
-                TypeSpec.classBuilder("TypeFactoryImpl")
-                        .addSuperinterface(ClassName.get(Const.ADAPTER_PACKAGE_NAME, "TypeFactory"))
+        JavaFile javaFile = JavaFile.builder(ADAPTER_PACKAGE_NAME,
+                TypeSpec.classBuilder(TYPE_FACTORY_IMPL)
+                        .addSuperinterface(ClassName.get(ADAPTER_PACKAGE_NAME, TYPE_FACTORY))
                         .addModifiers(Modifier.PUBLIC)
                         .addMethod(
                                 MethodSpec.methodBuilder("type")
@@ -154,7 +155,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
                                         .addParameter(viewParameterSpec)
                                         .addCode(createViewHolderBlock.build())
                                         .addStatement("return null")
-                                        .returns(ClassName.get(Const.ADAPTER_PACKAGE_NAME, "BaseViewHolder"))
+                                        .returns(ClassName.get(ADAPTER_PACKAGE_NAME, "BaseViewHolder"))
                                         .build()
                         )
                         .build())

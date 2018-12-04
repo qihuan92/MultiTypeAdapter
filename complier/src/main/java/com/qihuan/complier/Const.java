@@ -8,4 +8,7 @@ package com.qihuan.complier;
  */
 public interface Const {
     String ADAPTER_PACKAGE_NAME = "com.qihuan.adapter";
+    String TYPE_FACTORY = "TypeFactory";
+    String IMPL = "_Impl";
+    String TYPE_FACTORY_IMPL = TYPE_FACTORY + IMPL;
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -18,15 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
+    private static final String IMPL = "_Impl";
+
     private TypeFactory typeFactory;
     private List<Item> dataList;
     private BaseViewHolder emptyViewHolder;
 
     public MultiTypeAdapter() {
         this.typeFactory = getTypeFactory();
-        if (this.typeFactory == null) {
-            throw new RuntimeException("Your ViewHolder must be annotated with @BindItemView");
-        }
     }
 
     @NonNull
@@ -44,6 +44,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (dataList == null) {
             return;
         }
+        // noinspection unchecked
         holder.onBind(dataList.get(position), position, this);
     }
 
@@ -57,6 +58,9 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        if (typeFactory == null) {
+            return View.NO_ID;
+        }
         return dataList.get(position).type(typeFactory);
     }
 
@@ -75,14 +79,12 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         notifyDataSetChanged();
     }
 
+    @Nullable
     private TypeFactory getTypeFactory() {
         TypeFactory typeFactory = null;
         try {
-            String factoryImplName = TypeFactory.class.getCanonicalName() + "Impl";
-            Class<?> factoryImplClass = Class.forName(factoryImplName);
-            typeFactory = (TypeFactory) factoryImplClass.newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+            typeFactory = (TypeFactory) Class.forName(TypeFactory.class.getCanonicalName() + IMPL).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ignored) {
         }
         return typeFactory;
     }
