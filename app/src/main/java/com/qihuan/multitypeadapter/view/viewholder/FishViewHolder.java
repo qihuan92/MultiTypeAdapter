@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.qihuan.adapter.BaseViewHolder;
 import com.qihuan.adapter.MultiTypeAdapter;
-import com.qihuan.annotation.ItemType;
+import com.qihuan.annotation.BindItemView;
 import com.qihuan.multitypeadapter.R;
 import com.qihuan.multitypeadapter.model.Fish;
 
@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
  * @author qi
  * @date 2018/11/29
  */
-@ItemType(layoutId = R.layout.item_fish, dataClass = Fish.class)
+@BindItemView(R.layout.item_fish)
 public class FishViewHolder extends BaseViewHolder<Fish> {
 
     public FishViewHolder(@NonNull View itemView) {

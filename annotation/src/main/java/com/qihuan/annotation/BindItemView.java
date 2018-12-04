@@ -7,9 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
-public @interface ItemType {
-
-    int layoutId();
-
-    Class<?> dataClass();
+public @interface BindItemView {
+    int value();
 }

@@ -1,5 +1,6 @@
 package com.qihuan.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,17 +20,21 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private TypeFactory typeFactory;
     private List<Item> dataList;
+    private BaseViewHolder emptyViewHolder;
 
     public MultiTypeAdapter() {
         this.typeFactory = getTypeFactory();
         if (this.typeFactory == null) {
-            throw new RuntimeException("Your ViewHolder must be annotated with @ItemType");
+            throw new RuntimeException("Your ViewHolder must be annotated with @BindItemView");
         }
     }
 
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == View.NO_ID) {
+            return emptyViewHolder(parent.getContext());
+        }
         View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
         return typeFactory.createViewHolder(viewType, view);
     }
@@ -55,11 +60,13 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return dataList.get(position).type(typeFactory);
     }
 
+    @SuppressWarnings("unused")
     public void setDataList(@NonNull List<Item> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
 
+    @SuppressWarnings("unused")
     public void clearDataList() {
         if (dataList == null) {
             return;
@@ -78,5 +85,17 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             e.printStackTrace();
         }
         return typeFactory;
+    }
+
+    @SuppressWarnings("unused")
+    public void setEmptyViewHolder(BaseViewHolder emptyViewHolder) {
+        this.emptyViewHolder = emptyViewHolder;
+    }
+
+    private BaseViewHolder emptyViewHolder(Context context) {
+        if (emptyViewHolder == null) {
+            return new EmptyViewHolder(new View(context));
+        }
+        return emptyViewHolder;
     }
 }

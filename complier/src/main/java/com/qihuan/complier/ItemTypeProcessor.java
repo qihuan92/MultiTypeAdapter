@@ -1,8 +1,8 @@
 package com.qihuan.complier;
 
 import com.google.auto.service.AutoService;
-import com.qihuan.annotation.ItemType;
-import com.qihuan.complier.bean.ViewHolderInfoBean;
+import com.qihuan.annotation.BindItemView;
+import com.qihuan.complier.bean.ViewHolderInfo;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
@@ -17,6 +17,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
@@ -27,16 +29,23 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
+/**
+ * ItemTypeProcessor
+ *
+ * @author qi
+ * @date 2018-12-04
+ */
+@SuppressWarnings("unused")
 @AutoService(Processor.class)
 public class ItemTypeProcessor extends AbstractProcessor {
 
     private Filer filer;
     private Messager messager;
-    private List<ViewHolderInfoBean> viewHolderInfoList;
+    private List<ViewHolderInfo> viewHolderInfoList;
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -44,34 +53,50 @@ public class ItemTypeProcessor extends AbstractProcessor {
         viewHolderInfoList = new ArrayList<>();
         filer = processingEnvironment.getFiler();
         messager = processingEnvironment.getMessager();
+
+        messager.printMessage(Diagnostic.Kind.NOTE, "init");
     }
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         LinkedHashSet<String> annotations = new LinkedHashSet<>();
-        annotations.add(ItemType.class.getCanonicalName());
+        annotations.add(BindItemView.class.getCanonicalName());
         return annotations;
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-        for (Element element : roundEnvironment.getElementsAnnotatedWith(ItemType.class)) {
+        messager.printMessage(Diagnostic.Kind.NOTE, "process");
+        for (Element element : roundEnvironment.getElementsAnnotatedWith(BindItemView.class)) {
             if (element.getKind() != ElementKind.CLASS) {
-                error(element, "Only classes can be annotated with @%s", ItemType.class.getSimpleName());
+                error(element, "Only classes can be annotated with @%s", BindItemView.class.getSimpleName());
                 return true;
             }
             analysisAnnotated(element);
         }
         genTypeFactory();
-        initTypeFactory();
         return false;
     }
 
+    @Nullable
+    private TypeMirror getSuperGenericClass(@Nonnull Element element) {
+        TypeElement typeElement = (TypeElement) element;
+        DeclaredType declaredType = (DeclaredType) typeElement.getSuperclass();
+        List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
+        if (typeArguments == null || typeArguments.size() == 0) {
+            return null;
+        }
+        return typeArguments.get(0);
+    }
+
     private void analysisAnnotated(Element element) {
-        ItemType annotation = element.getAnnotation(ItemType.class);
-        int layoutId = annotation.layoutId();
-        TypeMirror typeMirror = getTypeMirror(annotation);
-        viewHolderInfoList.add(new ViewHolderInfoBean()
+        BindItemView annotation = element.getAnnotation(BindItemView.class);
+        int layoutId = annotation.value();
+        TypeMirror typeMirror = getSuperGenericClass(element);
+        if (typeMirror == null) {
+            error(element, "ViewHolder 缺少泛型");
+        }
+        viewHolderInfoList.add(new ViewHolderInfo()
                 .setLayoutId(layoutId)
                 .setDataClassTypeMirror(typeMirror)
                 .setViewHolderTypeMirror(element.asType())
@@ -85,10 +110,10 @@ public class ItemTypeProcessor extends AbstractProcessor {
         CodeBlock.Builder typeBlock = CodeBlock.builder();
         CodeBlock.Builder createViewHolderBlock = CodeBlock.builder();
 
-        for (ViewHolderInfoBean viewHolderInfoBean : viewHolderInfoList) {
-            int layoutId = viewHolderInfoBean.getLayoutId();
-            TypeMirror dataClassTypeMirror = viewHolderInfoBean.getDataClassTypeMirror();
-            TypeMirror viewHolderTypeMirror = viewHolderInfoBean.getViewHolderTypeMirror();
+        for (ViewHolderInfo viewHolderInfo : viewHolderInfoList) {
+            int layoutId = viewHolderInfo.getLayoutId();
+            TypeMirror dataClassTypeMirror = viewHolderInfo.getDataClassTypeMirror();
+            TypeMirror viewHolderTypeMirror = viewHolderInfo.getViewHolderTypeMirror();
 
             typeBlock.beginControlFlow("if ($N instanceof $T)", itemParameterSpec, TypeName.get(dataClassTypeMirror))
                     .indent()
@@ -116,7 +141,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
                                         .returns(TypeName.INT)
                                         .addCode(CodeBlock.builder()
                                                 .add(typeBlock.build())
-                                                .addStatement("return -1")
+                                                .addStatement("return View.NO_ID")
                                                 .build()
                                         )
                                         .build()
@@ -141,21 +166,13 @@ public class ItemTypeProcessor extends AbstractProcessor {
         }
     }
 
-    private void initTypeFactory() {
-
-    }
-
-    @SuppressWarnings("SameParameterValue")
+    @SuppressWarnings({"SameParameterValue", "unused"})
     private void error(Element e, String msg, Object... args) {
         messager.printMessage(Diagnostic.Kind.ERROR, String.format(msg, args), e);
     }
 
-    private TypeMirror getTypeMirror(ItemType annotation) {
-        try {
-            annotation.dataClass();
-        } catch (MirroredTypeException mte) {
-            return mte.getTypeMirror();
-        }
-        return null;
+    @SuppressWarnings({"SameParameterValue", "unused"})
+    private void note(Element e, String msg, Object... args) {
+        messager.printMessage(Diagnostic.Kind.NOTE, String.format(msg, args), e);
     }
 }
