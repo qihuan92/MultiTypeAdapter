@@ -51,6 +51,8 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
         return (V) view;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="子控件操作">
+
     /**
      * Will set the text of a TextView.
      *
@@ -310,4 +312,5 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
         view.setRating(rating);
         return this;
     }
+    // </editor-fold>
 }

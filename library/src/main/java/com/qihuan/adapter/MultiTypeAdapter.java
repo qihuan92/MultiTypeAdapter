@@ -38,6 +38,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.typeFactory = getTypeFactory();
     }
 
+    // <editor-fold defaultstate="collapsed" desc="基本实现">
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,6 +46,13 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         BaseViewHolder viewHolder = typeFactory.createViewHolder(viewType, view);
         bindViewClickListener(viewHolder);
         return viewHolder;
+    }
+
+    private View inflateLayout(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == View.NO_ID) {
+            return new View(parent.getContext());
+        }
+        return LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
     }
 
     @Override
@@ -65,14 +73,9 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
         return typeFactory.type(dataList.get(position));
     }
+    // </editor-fold>
 
-    private View inflateLayout(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == View.NO_ID) {
-            return new View(parent.getContext());
-        }
-        return LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
-    }
-
+    // <editor-fold defaultstate="collapsed" desc="点击事件">
     private void bindViewClickListener(BaseViewHolder viewHolder) {
         View itemView = viewHolder.itemView;
         if (itemView == null) {
@@ -95,7 +98,9 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         this.onItemLongClickListener = onItemLongClickListener;
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="类型工厂">
     @Nullable
     private TypeFactory getTypeFactory() {
         TypeFactory typeFactory = null;
@@ -105,6 +110,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
         return typeFactory;
     }
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="数据操作">
     @SuppressWarnings("unused")
@@ -160,6 +166,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="点击事件监听">
     public interface OnItemClickListener {
         void onItemClick(Object data, View view, int position);
     }
@@ -167,4 +174,5 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public interface OnItemLongClickListener {
         boolean onItemLongClick(Object data, View view, int position);
     }
+    // </editor-fold>
 }
