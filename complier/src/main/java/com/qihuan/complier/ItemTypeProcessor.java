@@ -10,8 +10,11 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+import com.sun.source.util.Trees;
+import com.sun.tools.javac.tree.JCTree;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -25,6 +28,7 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
@@ -52,6 +56,9 @@ public class ItemTypeProcessor extends AbstractProcessor {
     private Filer filer;
     private Messager messager;
     private List<ViewHolderInfo> viewHolderInfoList;
+    @Nullable
+    private Trees trees;
+    private final RScanner rScanner = new RScanner();
 
     @Override
     public synchronized void init(ProcessingEnvironment processingEnvironment) {
@@ -59,6 +66,10 @@ public class ItemTypeProcessor extends AbstractProcessor {
         viewHolderInfoList = new ArrayList<>();
         filer = processingEnvironment.getFiler();
         messager = processingEnvironment.getMessager();
+        try {
+            trees = Trees.instance(processingEnv);
+        } catch (IllegalArgumentException ignored) {
+        }
     }
 
     @Override
@@ -101,6 +112,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
         }
         viewHolderInfoList.add(new ViewHolderInfo()
                 .setLayoutId(layoutId)
+                .setElement(element)
                 .setDataClassTypeMirror(typeMirror)
                 .setViewHolderTypeMirror(element.asType())
         );
@@ -115,16 +127,19 @@ public class ItemTypeProcessor extends AbstractProcessor {
 
         for (ViewHolderInfo viewHolderInfo : viewHolderInfoList) {
             int layoutId = viewHolderInfo.getLayoutId();
+            Element element = viewHolderInfo.getElement();
             TypeMirror dataClassTypeMirror = viewHolderInfo.getDataClassTypeMirror();
             TypeMirror viewHolderTypeMirror = viewHolderInfo.getViewHolderTypeMirror();
 
+            Res res = elementToRes(element, BindItemView.class, layoutId);
+
             typeBlock.beginControlFlow("if ($N instanceof $T)", itemParameterSpec, TypeName.get(dataClassTypeMirror))
                     .indent()
-                    .addStatement("return $L", layoutId)
+                    .addStatement("return $L", res.codeBlock)
                     .unindent()
                     .endControlFlow();
 
-            createViewHolderBlock.beginControlFlow("if ($N == $L)", typeParameterSpec, layoutId)
+            createViewHolderBlock.beginControlFlow("if ($N == $L)", typeParameterSpec, res.codeBlock)
                     .indent()
                     .addStatement("return new $T($N)", TypeName.get(viewHolderTypeMirror), viewParameterSpec)
                     .unindent()
@@ -151,8 +166,8 @@ public class ItemTypeProcessor extends AbstractProcessor {
                         .addMethod(
                                 MethodSpec.methodBuilder("createViewHolder")
                                         .addModifiers(Modifier.PUBLIC)
-                                        .addAnnotation(Override.class)
                                         .addAnnotation(NonNull.class)
+                                        .addAnnotation(Override.class)
                                         .addParameter(typeParameterSpec)
                                         .addParameter(viewParameterSpec)
                                         .addCode(createViewHolderBlock.build())
@@ -167,6 +182,31 @@ public class ItemTypeProcessor extends AbstractProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private Res elementToRes(Element element, Class<? extends Annotation> annotation, int value) {
+        // noinspection ConstantConditions
+        JCTree tree = (JCTree) trees.getTree(element, getMirror(element, annotation));
+        // tree can be null if the references are compiled types and not source
+        if (tree != null) {
+            rScanner.reset();
+            tree.accept(rScanner);
+            if (!rScanner.resourceIds.isEmpty()) {
+                return rScanner.resourceIds.values().iterator().next();
+            }
+        }
+        return new Res(value);
+    }
+
+    @Nullable
+    private static AnnotationMirror getMirror(Element element, Class<? extends Annotation> annotation) {
+        for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
+            if (annotationMirror.getAnnotationType().toString().equals(annotation.getCanonicalName())) {
+                return annotationMirror;
+            }
+        }
+        return null;
     }
 
     @SuppressWarnings({"SameParameterValue", "unused"})

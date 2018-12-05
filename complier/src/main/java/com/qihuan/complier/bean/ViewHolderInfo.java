@@ -1,5 +1,6 @@
 package com.qihuan.complier.bean;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
 
 /**
@@ -10,14 +11,16 @@ import javax.lang.model.type.TypeMirror;
  */
 public class ViewHolderInfo {
     private int layoutId;
+    private Element element;
     private TypeMirror dataClassTypeMirror;
     private TypeMirror viewHolderTypeMirror;
 
     public ViewHolderInfo() {
     }
 
-    public ViewHolderInfo(int layoutId, TypeMirror dataClassTypeMirror, TypeMirror viewHolderTypeMirror) {
+    public ViewHolderInfo(int layoutId, Element element, TypeMirror dataClassTypeMirror, TypeMirror viewHolderTypeMirror) {
         this.layoutId = layoutId;
+        this.element = element;
         this.dataClassTypeMirror = dataClassTypeMirror;
         this.viewHolderTypeMirror = viewHolderTypeMirror;
     }
@@ -28,6 +31,15 @@ public class ViewHolderInfo {
 
     public ViewHolderInfo setLayoutId(int layoutId) {
         this.layoutId = layoutId;
+        return this;
+    }
+
+    public Element getElement() {
+        return element;
+    }
+
+    public ViewHolderInfo setElement(Element element) {
+        this.element = element;
         return this;
     }
 
