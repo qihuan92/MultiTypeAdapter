@@ -12,12 +12,13 @@ import androidx.annotation.NonNull;
  */
 public class EmptyViewHolder extends BaseViewHolder {
 
+    @SuppressWarnings("WeakerAccess")
     public EmptyViewHolder(@NonNull View itemView) {
         super(itemView);
     }
 
     @Override
-    public void onBind(Item data, int position, MultiTypeAdapter adapter) {
+    public void onBind(Object data, int position, MultiTypeAdapter adapter) {
 
     }
 }

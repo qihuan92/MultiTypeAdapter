@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
  */
 public interface TypeFactory {
 
-    int type(Item data);
+    int type(Object data);
 
     @NonNull
     BaseViewHolder createViewHolder(int type, View view);

@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @author qi
  * @date 2018/11/27
  */
-public abstract class BaseViewHolder<T extends Item> extends RecyclerView.ViewHolder {
+public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
     private SparseArray<View> viewList;
     View itemView;

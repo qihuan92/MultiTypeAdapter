@@ -109,7 +109,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
     private void genTypeFactory() {
         ParameterSpec typeParameterSpec = ParameterSpec.builder(TypeName.INT, "type").build();
         ParameterSpec viewParameterSpec = ParameterSpec.builder(ClassName.get("android.view", "View"), "view").build();
-        ParameterSpec itemParameterSpec = ParameterSpec.builder(ClassName.get(ADAPTER_PACKAGE_NAME, "Item"), "data").build();
+        ParameterSpec itemParameterSpec = ParameterSpec.builder(ClassName.get(ADAPTER_PACKAGE_NAME, "Object"), "data").build();
         CodeBlock.Builder typeBlock = CodeBlock.builder();
         CodeBlock.Builder createViewHolderBlock = CodeBlock.builder();
 

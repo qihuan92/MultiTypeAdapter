@@ -1,7 +1,5 @@
 package com.qihuan.multitypeadapter.viewmodel;
 
-
-import com.qihuan.adapter.Item;
 import com.qihuan.multitypeadapter.model.Cat;
 import com.qihuan.multitypeadapter.model.Dog;
 import com.qihuan.multitypeadapter.model.Fish;
@@ -22,14 +20,14 @@ import androidx.lifecycle.ViewModel;
  */
 public class MainViewModel extends ViewModel {
 
-    private MutableLiveData<List<Item>> dataList = new MutableLiveData<>();
-    private List<Item> list = new ArrayList<>();
+    private MutableLiveData<List<Object>> dataList = new MutableLiveData<>();
+    private List<Object> list = new ArrayList<>();
 
     public MainViewModel() {
         setData();
     }
 
-    public LiveData<List<Item>> getDataList() {
+    public LiveData<List<Object>> getDataList() {
         return dataList;
     }
 

@@ -25,7 +25,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final String IMPL = "_Impl";
 
     private TypeFactory typeFactory;
-    private List<Item> dataList;
+    private List<Object> dataList;
     private BaseViewHolder emptyViewHolder;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
@@ -35,7 +35,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public MultiTypeAdapter(@Nullable List<Item> dataList) {
+    public MultiTypeAdapter(@Nullable List<Object> dataList) {
         this.dataList = dataList == null ? new ArrayList<>() : dataList;
         this.typeFactory = getTypeFactory();
     }
@@ -68,7 +68,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         if (typeFactory == null) {
             return View.NO_ID;
         }
-        return dataList.get(position).type(typeFactory);
+        return typeFactory.type(dataList.get(position));
     }
 
     private void bindViewClickListener(BaseViewHolder viewHolder) {
@@ -118,30 +118,30 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     // <editor-fold defaultstate="collapsed" desc="数据操作">
     @SuppressWarnings("unused")
-    public void setDataList(@NonNull List<Item> dataList) {
+    public void setDataList(@NonNull List<Object> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void addData(@IntRange(from = 0) int position, @NonNull Item item) {
-        dataList.add(position, item);
+    public void addData(@IntRange(from = 0) int position, @NonNull Object data) {
+        dataList.add(position, data);
         notifyItemInserted(position);
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void addData(@NonNull Item item) {
-        addData(dataList.size(), item);
+    public void addData(@NonNull Object data) {
+        addData(dataList.size(), data);
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void addData(@IntRange(from = 0) int position, @NonNull Collection<? extends Item> itemList) {
+    public void addData(@IntRange(from = 0) int position, @NonNull Collection<? extends Object> itemList) {
         dataList.addAll(position, itemList);
         notifyItemRangeInserted(position, itemList.size());
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void addData(@NonNull Collection<? extends Item> itemList) {
+    public void addData(@NonNull Collection<? extends Object> itemList) {
         addData(dataList.size(), itemList);
     }
 
@@ -152,8 +152,8 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void setData(@IntRange(from = 0) int position, @NonNull Item item) {
-        dataList.set(position, item);
+    public void setData(@IntRange(from = 0) int position, @NonNull Object data) {
+        dataList.set(position, data);
         notifyItemChanged(position);
     }
 
@@ -165,16 +165,16 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @SuppressWarnings("unused")
     @NonNull
-    public List<Item> getDataList() {
+    public List<Object> getDataList() {
         return dataList;
     }
     // </editor-fold>
 
     public interface OnItemClickListener {
-        void onItemClick(Item data, View view, int position);
+        void onItemClick(Object data, View view, int position);
     }
 
     public interface OnItemLongClickListener {
-        boolean onItemLongClick(Item data, View view, int position);
+        boolean onItemLongClick(Object data, View view, int position);
     }
 }
