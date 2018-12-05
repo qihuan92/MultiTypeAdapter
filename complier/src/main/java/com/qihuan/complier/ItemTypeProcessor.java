@@ -135,7 +135,6 @@ public class ItemTypeProcessor extends AbstractProcessor {
         JavaFile javaFile = JavaFile.builder(ADAPTER_PACKAGE_NAME,
                 TypeSpec.classBuilder(TYPE_FACTORY_IMPL)
                         .addSuperinterface(ClassName.get(ADAPTER_PACKAGE_NAME, TYPE_FACTORY))
-                        .addModifiers(Modifier.PUBLIC)
                         .addMethod(
                                 MethodSpec.methodBuilder("type")
                                         .addModifiers(Modifier.PUBLIC)
@@ -157,7 +156,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
                                         .addParameter(typeParameterSpec)
                                         .addParameter(viewParameterSpec)
                                         .addCode(createViewHolderBlock.build())
-                                        .addStatement("return null")
+                                        .addStatement("return new $T($N)", ClassName.get(ADAPTER_PACKAGE_NAME, "EmptyViewHolder"), viewParameterSpec)
                                         .returns(ClassName.get(ADAPTER_PACKAGE_NAME, "BaseViewHolder"))
                                         .build()
                         )

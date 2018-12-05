@@ -1,6 +1,5 @@
 package com.qihuan.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private TypeFactory typeFactory;
     private List<Object> dataList;
-    private BaseViewHolder emptyViewHolder;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
 
@@ -43,10 +41,7 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == View.NO_ID) {
-            return emptyViewHolder(parent.getContext());
-        }
-        View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+        View view = inflateLayout(parent, viewType);
         BaseViewHolder viewHolder = typeFactory.createViewHolder(viewType, view);
         bindViewClickListener(viewHolder);
         return viewHolder;
@@ -69,6 +64,13 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             return View.NO_ID;
         }
         return typeFactory.type(dataList.get(position));
+    }
+
+    private View inflateLayout(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == View.NO_ID) {
+            return new View(parent.getContext());
+        }
+        return LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
     }
 
     private void bindViewClickListener(BaseViewHolder viewHolder) {
@@ -102,18 +104,6 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ignored) {
         }
         return typeFactory;
-    }
-
-    @SuppressWarnings("unused")
-    public void setEmptyViewHolder(BaseViewHolder emptyViewHolder) {
-        this.emptyViewHolder = emptyViewHolder;
-    }
-
-    private BaseViewHolder emptyViewHolder(Context context) {
-        if (emptyViewHolder == null) {
-            return new EmptyViewHolder(new View(context));
-        }
-        return emptyViewHolder;
     }
 
     // <editor-fold defaultstate="collapsed" desc="数据操作">

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
  * @author qi
  * @date 2018/11/30
  */
-public interface TypeFactory {
+interface TypeFactory {
 
     int type(Object data);
 
