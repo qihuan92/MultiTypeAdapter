@@ -2,6 +2,8 @@ package com.qihuan.adapter;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 /**
  * TypeFactory
  *
@@ -12,5 +14,6 @@ public interface TypeFactory {
 
     int type(Item data);
 
+    @NonNull
     BaseViewHolder createViewHolder(int type, View view);
 }

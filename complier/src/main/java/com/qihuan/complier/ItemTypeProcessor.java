@@ -33,6 +33,8 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
 
+import androidx.annotation.NonNull;
+
 import static com.qihuan.complier.Const.ADAPTER_PACKAGE_NAME;
 import static com.qihuan.complier.Const.TYPE_FACTORY;
 import static com.qihuan.complier.Const.TYPE_FACTORY_IMPL;
@@ -151,6 +153,7 @@ public class ItemTypeProcessor extends AbstractProcessor {
                                 MethodSpec.methodBuilder("createViewHolder")
                                         .addModifiers(Modifier.PUBLIC)
                                         .addAnnotation(Override.class)
+                                        .addAnnotation(NonNull.class)
                                         .addParameter(typeParameterSpec)
                                         .addParameter(viewParameterSpec)
                                         .addCode(createViewHolderBlock.build())

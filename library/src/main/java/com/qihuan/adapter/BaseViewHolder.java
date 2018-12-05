@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public abstract class BaseViewHolder<T extends Item> extends RecyclerView.ViewHolder {
 
     private SparseArray<View> viewList;
-    private View itemView;
+    View itemView;
 
     public BaseViewHolder(@NonNull View itemView) {
         super(itemView);

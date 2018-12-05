@@ -13,6 +13,6 @@
 
     <ImageView
         android:id="@+id/iv_content"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
 </LinearLayout>
