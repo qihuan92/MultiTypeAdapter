@@ -131,13 +131,13 @@ public class MultiTypeAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void addData(@IntRange(from = 0) int position, @NonNull Collection<? extends Object> itemList) {
+    public void addData(@IntRange(from = 0) int position, @NonNull Collection itemList) {
         dataList.addAll(position, itemList);
         notifyItemRangeInserted(position, itemList.size());
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public void addData(@NonNull Collection<? extends Object> itemList) {
+    public void addData(@NonNull Collection itemList) {
         addData(dataList.size(), itemList);
     }
 
