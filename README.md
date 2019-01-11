@@ -42,7 +42,7 @@ dependencies {
    }
    ```
 
-2. 定义布局文件，例如 item_exampl.xml
+2. 定义布局文件，示例：item_exampl.xml
 
    ```xml
    <?xml version="1.0" encoding="utf-8"?>
