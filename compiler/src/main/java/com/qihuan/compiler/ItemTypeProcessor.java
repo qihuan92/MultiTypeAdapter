@@ -1,8 +1,8 @@
-package com.qihuan.complier;
+package com.qihuan.compiler;
 
 import com.google.auto.service.AutoService;
 import com.qihuan.annotation.BindItemView;
-import com.qihuan.complier.bean.ViewHolderInfo;
+import com.qihuan.compiler.bean.ViewHolderInfo;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
@@ -39,15 +39,15 @@ import javax.tools.Diagnostic;
 
 import androidx.annotation.NonNull;
 
-import static com.qihuan.complier.Const.ADAPTER_PACKAGE_NAME;
-import static com.qihuan.complier.Const.TYPE_FACTORY;
-import static com.qihuan.complier.Const.TYPE_FACTORY_IMPL;
+import static com.qihuan.compiler.Const.ADAPTER_PACKAGE_NAME;
+import static com.qihuan.compiler.Const.TYPE_FACTORY;
+import static com.qihuan.compiler.Const.TYPE_FACTORY_IMPL;
 
 /**
  * ItemTypeProcessor
  *
  * @author qi
- * @date 2018-12-04
+ * @since 2018-12-04
  */
 @SuppressWarnings("unused")
 @AutoService(Processor.class)

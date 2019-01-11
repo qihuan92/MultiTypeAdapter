@@ -1,4 +1,4 @@
-package com.qihuan.complier;
+package com.qihuan.compiler;
 
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.tree.JCTree;

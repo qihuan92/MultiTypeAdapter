@@ -1,10 +1,10 @@
-package com.qihuan.complier;
+package com.qihuan.compiler;
 
 /**
  * Const
  *
  * @author qi
- * @date 2018/11/30
+ * @since 2018/11/30
  */
 public interface Const {
     String ADAPTER_PACKAGE_NAME = "com.qihuan.adapter";

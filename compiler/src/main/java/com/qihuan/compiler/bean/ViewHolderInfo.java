@@ -1,4 +1,4 @@
-package com.qihuan.complier.bean;
+package com.qihuan.compiler.bean;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
@@ -7,7 +7,7 @@ import javax.lang.model.type.TypeMirror;
  * ViewHolderInfo
  *
  * @author qi
- * @date 2018/11/30
+ * @since 2018/11/30
  */
 public class ViewHolderInfo {
     private int layoutId;

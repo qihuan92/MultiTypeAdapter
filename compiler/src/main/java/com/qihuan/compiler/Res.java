@@ -1,4 +1,4 @@
-package com.qihuan.complier;
+package com.qihuan.compiler;
 
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;

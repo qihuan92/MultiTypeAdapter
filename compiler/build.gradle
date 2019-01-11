@@ -1,6 +1,7 @@
 import org.gradle.internal.jvm.Jvm
 
 apply plugin: 'java-library'
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -15,3 +16,12 @@ dependencies {
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
+
+publish {
+    userOrg = 'qihuan92'
+    groupId = 'com.qihuan.multitype'
+    artifactId = 'multitype-adapter-compiler'
+    publishVersion = '1.0.0'
+    desc = 'Android Multitype Adapter'
+    website = 'https://github.com/qihuan92/MultiTypeAdapter'
+}
