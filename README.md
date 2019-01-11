@@ -1,5 +1,5 @@
 # MultiType Adapter
-![license](https://img.shields.io/github/license/qihuan92/MultiTypeAdapter.svg)![bintray](https://img.shields.io/bintray/v/qihuan92/maven/multitype-adapter.svg)![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)
+![license](https://img.shields.io/github/license/qihuan92/MultiTypeAdapter.svg) ![bintray](https://img.shields.io/bintray/v/qihuan92/maven/multitype-adapter.svg) ![API](https://img.shields.io/badge/API-19%2B-brightgreen.svg?style=flat)
 
 使用注解的方式构建多种条目类型的列表
 
