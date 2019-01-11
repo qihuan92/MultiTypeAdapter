@@ -66,9 +66,8 @@ dependencies {
        }
    
        @Override
-       public void onBind(Fish data, int position, MultiTypeAdapter adapter) {
-           TextView tvTitle = (TextView) getView(R.id.tv_title);
-           tvTitle.setText(data.getName());
+       public void onBind(Example data, int position, MultiTypeAdapter adapter) {
+           
        }
    }
    ```
