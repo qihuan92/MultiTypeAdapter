@@ -14,7 +14,7 @@ dependencies {
 
 ## 使用
 
-1. 创建实体类，实例 Example.java
+1. 创建实体类，示例：Example.java
 
    ```java
    public class Example {
