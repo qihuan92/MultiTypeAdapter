@@ -28,3 +28,8 @@ task clean(type: Delete) {
 subprojects {
     tasks.withType(Javadoc).all { enabled = false }
 }
+
+ext {
+    libVersionCode = 100
+    libVersionName = '1.0.0'
+}

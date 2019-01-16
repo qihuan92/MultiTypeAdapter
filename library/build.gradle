@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 100
-        versionName "1.0.0"
+        versionCode rootProject.ext.libVersionCode
+        versionName rootProject.ext.libVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -33,15 +33,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
-
-    api project(':annotation')
+    api "com.qihuan.multitype:multitype-adapter-annotation:$rootProject.ext.libVersionName"
 }
 
 publish {
     userOrg = 'qihuan92'
     groupId = 'com.qihuan.multitype'
     artifactId = 'multitype-adapter'
-    publishVersion = '1.0.0'
+    publishVersion = rootProject.ext.libVersionName
     desc = 'Android Multitype Adapter'
     website = 'https://github.com/qihuan92/MultiTypeAdapter'
 }

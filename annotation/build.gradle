@@ -1,4 +1,5 @@
 apply plugin: 'java-library'
+apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -6,3 +7,12 @@ dependencies {
 
 sourceCompatibility = "8"
 targetCompatibility = "8"
+
+publish {
+    userOrg = 'qihuan92'
+    groupId = 'com.qihuan.multitype'
+    artifactId = 'multitype-adapter-annotation'
+    publishVersion = rootProject.ext.libVersionName
+    desc = 'Android Multitype Adapter'
+    website = 'https://github.com/qihuan92/MultiTypeAdapter'
+}

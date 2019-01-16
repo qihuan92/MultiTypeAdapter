@@ -5,7 +5,7 @@ apply plugin: 'com.novoda.bintray-release'
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':annotation')
+    implementation "com.qihuan.multitype:multitype-adapter-annotation:$rootProject.ext.libVersionName"
 
     implementation 'androidx.annotation:annotation:1.0.1'
     implementation 'com.squareup:javapoet:1.10.0'
@@ -21,7 +21,7 @@ publish {
     userOrg = 'qihuan92'
     groupId = 'com.qihuan.multitype'
     artifactId = 'multitype-adapter-compiler'
-    publishVersion = '1.0.0'
+    publishVersion = rootProject.ext.libVersionName
     desc = 'Android Multitype Adapter'
     website = 'https://github.com/qihuan92/MultiTypeAdapter'
 }
