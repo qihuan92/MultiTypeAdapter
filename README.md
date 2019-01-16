@@ -26,7 +26,7 @@ dependencies {
            return name;
        }
    
-       public Fish setName(String name) {
+       public Example setName(String name) {
            this.name = name;
            return this;
        }
@@ -35,7 +35,7 @@ dependencies {
            return imageUrl;
        }
    
-       public Fish setImageUrl(String imageUrl) {
+       public Example setImageUrl(String imageUrl) {
            this.imageUrl = imageUrl;
            return this;
        }
@@ -61,7 +61,7 @@ dependencies {
    @BindItemView(R.layout.item_exampl)
    public class ExampleViewHolder extends BaseViewHolder<Example> {
    
-       public FishViewHolder(@NonNull View itemView) {
+       public ExampleViewHolder(@NonNull View itemView) {
            super(itemView);
        }
    
