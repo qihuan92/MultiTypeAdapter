@@ -126,3 +126,8 @@ dependencies {
 
 - [ ] 支持组件化项目
 - [ ] 支持线性布局和网格布局混排列表
+
+## 感谢
+
+- [CymChad/BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+
