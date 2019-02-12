@@ -42,7 +42,7 @@ dependencies {
    }
    ```
 
-2. 定义布局文件，示例：item_exampl.xml
+2. 定义布局文件，示例：item_example.xml
 
    ```xml
    <?xml version="1.0" encoding="utf-8"?>
@@ -58,7 +58,7 @@ dependencies {
 3. 创建一个 ViewHolder 继承  [`BaseViewHolder<T>`](https://github.com/qihuan92/MultiTypeAdapter/blob/master/library/src/main/java/com/qihuan/adapter/BaseViewHolder.java) 并添加 [`@BindItemView()`](https://github.com/qihuan92/MultiTypeAdapter/blob/master/annotation/src/main/java/com/qihuan/annotation/BindItemView.java) 注解，并且传入定义好的布局文件
 
    ```java
-   @BindItemView(R.layout.item_exampl)
+   @BindItemView(R.layout.item_example)
    public class ExampleViewHolder extends BaseViewHolder<Example> {
    
        public ExampleViewHolder(@NonNull View itemView) {
